@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flowing_river/ui/screens/home_screen.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flowing_river/ui/screens/favorites_screen.dart';
+import 'package:flowing_river/ui/screens/home_screen.dart';
+import 'package:flowing_river/ui/screens/images_screen.dart';
 import 'package:flowing_river/ui/screens/profile_screen.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/profile': (_) => ProfileScreen(),
         '/favorites': (_) => FavoritesScreen(),
+        '/images': (_) => ImagesScreen(),
       },
     );
   }

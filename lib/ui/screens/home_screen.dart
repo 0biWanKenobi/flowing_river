@@ -26,6 +26,10 @@ class HomeScreen extends StatelessWidget {
                 child: Text('Favorites'),
                 onPressed: () => Navigator.of(context).pushNamed('/favorites'),
               ),
+              RaisedButton(
+                child: Text('Images'),
+                onPressed: () => Navigator.of(context).pushNamed('/images'),
+              ),
             ],
           )
         ],
