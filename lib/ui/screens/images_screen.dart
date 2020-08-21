@@ -9,50 +9,56 @@ const int kImagePageLimit = 30;
 // workaround to https://github.com/dart-lang/sdk/issues/41449
 final $family = FutureProvider.autoDispose.family;
 
-final imageUrls = $family<SearchResult, int>((ref, page) async {
+final imageUrlsProvider = $family<SearchResult, int>((ref, page) async {
   final response = await http
       .get('https://picsum.photos/v2/list?page=$page&limit=$kImagePageLimit');
   final images = json.decode(response.body) as List<dynamic>;
   if (images.isEmpty)
     return SearchResult(
-      page,
       [],
     );
   else {
     final mappedImages =
         images.map((imgInfo) => (imgInfo as Map<String, dynamic>)).toList();
-
+    ref.read(pageNrProvider).state = page;
     // Once a page was downloaded, preserve its state to avoid re-downloading it again.
     ref.maintainState = true;
     return SearchResult(
-      page,
       mappedImages.map<String>((e) => e['url'] as String).toList(),
     );
   }
 });
 
-final imagePageCount = Provider(
-  (ref) => ref.watch(imageUrls(0)).whenData((value) => value.totalUrlCount),
+final imageUrls = Provider(
+  (ref) => ref.watch(imageUrlsProvider(1)).whenData((value) => value),
 );
 
-class SearchResult {
-  final int page;
-  final List<String> urlList;
-  int get totalUrlCount => kImagePageLimit * page + urlList.length;
+final pageNrProvider = StateProvider<int>((ref) => 1);
 
-  SearchResult(this.page, this.urlList);
+final urlsCountProvider =
+    FutureProvider.family<int, int>((ref, newValue) => Future.value(newValue));
+
+class SearchResult {
+  final List<String> urlList;
+  int totalUrlCount(page) => kImagePageLimit * (page - 1) + urlList.length;
+
+  SearchResult(this.urlList);
 }
 
 class ImagesScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return useProvider(imagePageCount).when(
-        data: (count) => Scaffold(
+    final int pageNr = useProvider(pageNrProvider).state;
+
+    return useProvider(imageUrls).when(
+        data: (searchResult) => Scaffold(
               appBar: AppBar(
                 title: Text('Images'),
               ),
               body: ListView.builder(
-                // itemCount: count,
+                itemCount: searchResult.urlList.isNotEmpty
+                    ? searchResult.totalUrlCount(pageNr) + 1
+                    : searchResult.totalUrlCount(pageNr),
                 itemBuilder: (_, i) {
                   return ProviderScope(
                     overrides: [imageIndex.overrideWithValue(i)],
@@ -70,11 +76,11 @@ class ImagesScreen extends HookWidget {
 
 final urlAtIndex = Provider.family<AsyncValue<String>, int>((ref, offset) {
   final offsetInPage = offset % kImagePageLimit;
-  final page = offset ~/ kImagePageLimit;
+  final page = offset ~/ kImagePageLimit + 1;
 
-  return ref
-      .watch(imageUrls(page))
-      .whenData((value) => value.urlList[offsetInPage]);
+  return ref.watch(imageUrlsProvider(page)).whenData((value) {
+    return value.urlList[offsetInPage];
+  });
 });
 
 final ScopedProvider<int> imageIndex =
