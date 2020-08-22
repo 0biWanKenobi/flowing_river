@@ -1,3 +1,4 @@
+import 'package:flowing_river/ui/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -43,16 +44,40 @@ class MyHomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screen = useProvider(currentScreen);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: HomeScreen(),
+      body: IndexedStack(
+        index: screen.state,
+        children:
+            screenList.values.map((appScreen) => appScreen.screen).toList(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _incrementCounter(context),
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) => screen.state = index,
+        unselectedItemColor: Colors.black12,
+        showUnselectedLabels: true,
+        currentIndex: screen.state,
+        items: screenList.values
+            .map((appScreen) => BottomNavigationBarItem(
+                  icon: Icon(
+                    appScreen.iconData,
+                    color: Colors.black45,
+                  ),
+                  title: Text(
+                    appScreen.name,
+                    style: TextStyle(color: Colors.black45),
+                  ),
+                ))
+            .toList(),
+      ),
     );
   }
 }
