@@ -30,9 +30,6 @@ final imageUrls = Provider(
 
 final statusProvider = StateProvider<CurrentStatus>((ref) => null);
 
-final urlsCountProvider =
-    FutureProvider.family<int, int>((ref, newValue) => Future.value(newValue));
-
 class CurrentStatus {
   final bool _hasMore;
   final int _resultCount, _page;
