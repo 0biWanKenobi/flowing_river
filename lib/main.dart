@@ -1,7 +1,8 @@
-import 'package:flowing_river/ui/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flowing_river/ui/screen_builder.dart';
+import 'package:flowing_river/ui/bottom_navigation.dart' as AppNav;
 import 'package:flowing_river/ui/screens/favorites_screen.dart';
 import 'package:flowing_river/ui/screens/home_screen.dart';
 import 'package:flowing_river/ui/screens/images_screen.dart';
@@ -44,16 +45,24 @@ class MyHomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screen = useProvider(currentScreen);
+    final currentScreen = useProvider(AppNav.currentScreenProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
       body: IndexedStack(
-        index: screen.state,
-        children:
-            screenList.values.map((appScreen) => appScreen.screen).toList(),
+        index: currentScreen.state,
+        children: AppNav.screenList.values
+            .map(
+              (el) => ProviderScope(
+                overrides: [
+                  currentTypeProvider.overrideWithValue(el.type),
+                ],
+                child: const ScreenBuilder(),
+              ),
+            )
+            .toList(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _incrementCounter(context),
@@ -61,11 +70,11 @@ class MyHomePage extends HookWidget {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) => screen.state = index,
         unselectedItemColor: Colors.black12,
         showUnselectedLabels: true,
-        currentIndex: screen.state,
-        items: screenList.values
+        currentIndex: currentScreen.state,
+        onTap: (index) => currentScreen.state = index,
+        items: AppNav.screenList.values
             .map((appScreen) => BottomNavigationBarItem(
                   icon: Icon(
                     appScreen.iconData,

@@ -1,8 +1,8 @@
-import 'package:flowing_river/ui/favorite_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
+import 'package:flowing_river/ui/favorite_widget.dart';
 import 'package:flowing_river/models/favorite_model.dart';
 
 final favoritesProvider =
@@ -17,6 +17,8 @@ class FavoriteModelList extends StateNotifier<List<FavoriteModel>> {
 
 class FavoritesScreen extends HookWidget {
   final UniqueKey inputNameKey = UniqueKey(), inputDescriptionKey = UniqueKey();
+
+  FavoritesScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

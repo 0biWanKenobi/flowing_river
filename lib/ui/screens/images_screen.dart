@@ -41,6 +41,8 @@ class CurrentStatus {
 }
 
 class ImagesScreen extends HookWidget {
+  const ImagesScreen({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final CurrentStatus status = useProvider(statusProvider).state;
@@ -52,12 +54,10 @@ class ImagesScreen extends HookWidget {
               ),
               body: ListView.builder(
                 itemCount: status.totalUrlCount,
-                itemBuilder: (_, i) {
-                  return ProviderScope(
-                    overrides: [imageIndex.overrideWithValue(i)],
-                    child: const ImageListTile(),
-                  );
-                },
+                itemBuilder: (_, i) => ProviderScope(
+                  overrides: [imageIndex.overrideWithValue(i)],
+                  child: const ImageListTile(),
+                ),
               ),
             ),
         loading: () => Scaffold(
