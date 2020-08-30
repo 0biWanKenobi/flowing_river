@@ -1,3 +1,4 @@
+import 'package:flowing_river/ui/screens/sliverbar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flowing_river/ui/screens/favorites_screen.dart';
@@ -5,7 +6,7 @@ import 'package:flowing_river/ui/screens/home_screen.dart';
 import 'package:flowing_river/ui/screens/images_screen.dart';
 import 'package:flowing_river/ui/screens/profile_screen.dart';
 
-enum ScreenType { Home, Favorites, Images, Profile }
+enum ScreenType { Home, Favorites, Images, Profile, Sliver }
 
 class AppScreen {
   final ScreenType type;
@@ -25,6 +26,8 @@ final Map<ScreenType, AppScreen> screenList = {
       const AppScreen(ScreenType.Images, 'Images', Icons.image, ImagesScreen()),
   ScreenType.Profile: const AppScreen(
       ScreenType.Profile, 'Profile', Icons.person, ProfileScreen()),
+  ScreenType.Sliver: const AppScreen(
+      ScreenType.Sliver, 'Sliver', Icons.expand_more, SliverScreen())
 };
 
 final currentScreenProvider = StateProvider<int>((ref) => 0);

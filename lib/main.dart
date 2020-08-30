@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flowing_river/ui/screen_builder.dart';
 import 'package:flowing_river/ui/bottom_navigation.dart' as AppNav;
 import 'package:flowing_river/ui/screens/favorites_screen.dart';
-import 'package:flowing_river/ui/screens/home_screen.dart';
 import 'package:flowing_river/ui/screens/images_screen.dart';
 import 'package:flowing_river/ui/screens/profile_screen.dart';
 
@@ -39,18 +38,11 @@ class MyHomePage extends HookWidget {
 
   final String title;
 
-  void _incrementCounter(BuildContext context) {
-    context.read(counterProvider).state++;
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentScreen = useProvider(AppNav.currentScreenProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
       body: IndexedStack(
         index: currentScreen.state,
         children: AppNav.screenList.values
@@ -63,11 +55,6 @@ class MyHomePage extends HookWidget {
               ),
             )
             .toList(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _incrementCounter(context),
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black12,
