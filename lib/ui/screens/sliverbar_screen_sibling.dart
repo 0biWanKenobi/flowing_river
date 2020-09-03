@@ -1,4 +1,4 @@
-import 'package:flowing_river/ui/bottom_navigation.dart' show ScreenType;
+import 'package:flowing_river/ui/bottom_navigation.dart';
 import 'package:flowing_river/ui/shared/topbar.dart';
 import 'package:flowing_river/ui/sliver_appbar_provider_factory.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final scrollCtrlListenerProvider = Provider.autoDispose
     .family<ScrollController, bool>(
-        scrollCtrlProviderFactory(ScreenType.Sliver));
+        scrollCtrlProviderFactory(ScreenType.Sliver2));
 
-class SliverScreen extends HookWidget {
-  const SliverScreen({Key key}) : super(key: key);
+class SliverBarSibling extends HookWidget {
+  const SliverBarSibling({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,10 @@ class SliverScreen extends HookWidget {
           overrides: [
             topBarUiProvider.overrideWithValue(
               TopBarUiModel(
-                type: ScreenType.Sliver,
-                title: 'SliverBar Screen',
+                type: ScreenType.Sliver2,
+                title: 'SliverBar Screen 2',
                 expandedTitle: Text(
-                  'SLIVERBAR SCREEN',
+                  'SLIVERBAR SCREEN 2',
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
@@ -39,7 +39,7 @@ class SliverScreen extends HookWidget {
         itemBuilder: (_, i) => const Card(
           child: Padding(
             padding: EdgeInsets.all(8),
-            child: Text('some text'),
+            child: Text('quite different'),
           ),
         ),
       ),

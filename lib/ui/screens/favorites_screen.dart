@@ -19,6 +19,7 @@ class FavoritesScreen extends HookWidget {
   final UniqueKey inputNameKey = UniqueKey(), inputDescriptionKey = UniqueKey();
 
   FavoritesScreen({Key key}) : super(key: key);
+  static const title = 'Favorites';
 
   @override
   Widget build(BuildContext context) {
@@ -26,61 +27,56 @@ class FavoritesScreen extends HookWidget {
     final favoriteNameController = useTextEditingController();
     final favoriteDescriptionController = useTextEditingController();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Favorites'),
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: TextField(
-                  key: inputNameKey,
-                  controller: favoriteNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Favorite name',
-                  ),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: TextField(
+                key: inputNameKey,
+                controller: favoriteNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Favorite name',
                 ),
-              ),
-              const SizedBox(width: 10.0),
-              Expanded(
-                child: TextField(
-                  key: inputDescriptionKey,
-                  controller: favoriteDescriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Favorite description',
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              RaisedButton(
-                child: Text('Add'),
-                onPressed: () {
-                  final name = favoriteNameController.value.text;
-                  final description = favoriteDescriptionController.value.text;
-                  if (name.isNotEmpty && description.isNotEmpty)
-                    context
-                        .read(favoritesProvider)
-                        .add(FavoriteModel(name, description));
-                },
-              )
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: favorites.length,
-              itemBuilder: (_, i) => ProviderScope(
-                overrides: [
-                  currentFavorite.overrideWithValue(favorites[i]),
-                ],
-                child: const FavoriteWidget(),
               ),
             ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: TextField(
+                key: inputDescriptionKey,
+                controller: favoriteDescriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Favorite description',
+                ),
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            RaisedButton(
+              child: Text('Add'),
+              onPressed: () {
+                final name = favoriteNameController.value.text;
+                final description = favoriteDescriptionController.value.text;
+                if (name.isNotEmpty && description.isNotEmpty)
+                  context
+                      .read(favoritesProvider)
+                      .add(FavoriteModel(name, description));
+              },
+            )
+          ],
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: favorites.length,
+            itemBuilder: (_, i) => ProviderScope(
+              overrides: [
+                currentFavorite.overrideWithValue(favorites[i]),
+              ],
+              child: const FavoriteWidget(),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

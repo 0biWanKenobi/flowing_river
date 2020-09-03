@@ -6,6 +6,7 @@ final counterProvider = StateProvider((_) => 0);
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
+  static const title = 'Home Page';
 
   void _incrementCounter(BuildContext context) {
     context.read(counterProvider).state++;
@@ -14,9 +15,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

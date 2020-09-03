@@ -9,6 +9,7 @@ final Map<ScreenType, ScreenKeySet> typeKeySet = {
   ScreenType.Images: ScreenKeySet(GlobalKey(), GlobalKey<NavigatorState>()),
   ScreenType.Profile: ScreenKeySet(GlobalKey(), GlobalKey<NavigatorState>()),
   ScreenType.Sliver: ScreenKeySet(GlobalKey(), GlobalKey<NavigatorState>()),
+  ScreenType.Sliver2: ScreenKeySet(GlobalKey(), GlobalKey<NavigatorState>()),
 };
 
 final currentTypeProvider =

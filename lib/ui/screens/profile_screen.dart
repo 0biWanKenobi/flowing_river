@@ -9,16 +9,11 @@ class ProfileScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final counter = useProvider(counterProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: Container(
-        child: Center(
-          child: Text(
-            "${counter.state}",
-            style: Theme.of(context).textTheme.headline4,
-          ),
+    return Container(
+      child: Center(
+        child: Text(
+          "${counter.state}",
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
     );
