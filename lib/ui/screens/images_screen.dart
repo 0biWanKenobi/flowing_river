@@ -24,7 +24,7 @@ final imageUrlsProvider = $family<List<String>, int>((ref, page) async {
   return mappedImages.map<String>((e) => e['url'] as String).toList();
 });
 
-final imageUrls = Provider(
+final imageUrls = Provider.autoDispose(
   (ref) => ref.watch(imageUrlsProvider(1)).whenData((value) => value),
 );
 
@@ -65,7 +65,8 @@ class ImagesScreen extends HookWidget {
   }
 }
 
-final urlAtIndex = Provider.family<AsyncValue<String>, int>((ref, offset) {
+final urlAtIndex =
+    Provider.autoDispose.family<AsyncValue<String>, int>((ref, offset) {
   final offsetInPage = offset % kImagePageLimit;
   final page = offset ~/ kImagePageLimit + 1;
 
