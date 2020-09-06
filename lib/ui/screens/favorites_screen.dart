@@ -15,10 +15,11 @@ class FavoriteModelList extends StateNotifier<List<FavoriteModel>> {
   }
 }
 
-class FavoritesScreen extends HookWidget {
-  final UniqueKey inputNameKey = UniqueKey(), inputDescriptionKey = UniqueKey();
+final nameKeyProvider = Provider((_) => UniqueKey());
+final descrKeyProvider = Provider((_) => UniqueKey());
 
-  FavoritesScreen({Key key}) : super(key: key);
+class FavoritesScreen extends HookWidget {
+  const FavoritesScreen({Key key}) : super(key: key);
   static const title = 'Favorites';
 
   @override
@@ -34,7 +35,7 @@ class FavoritesScreen extends HookWidget {
           children: [
             Expanded(
               child: TextField(
-                key: inputNameKey,
+                key: useProvider(nameKeyProvider),
                 controller: favoriteNameController,
                 decoration: const InputDecoration(
                   labelText: 'Favorite name',
@@ -44,7 +45,7 @@ class FavoritesScreen extends HookWidget {
             const SizedBox(width: 10.0),
             Expanded(
               child: TextField(
-                key: inputDescriptionKey,
+                key: useProvider(descrKeyProvider),
                 controller: favoriteDescriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Favorite description',

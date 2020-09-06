@@ -1,4 +1,3 @@
-import 'package:flowing_river/ui/screens/authenticated_screen.dart';
 import 'package:flowing_river/ui/screens/sliverbar_screen.dart';
 import 'package:flowing_river/ui/screens/sliverbar_screen_sibling.dart';
 import 'package:flutter/material.dart';
@@ -34,22 +33,18 @@ class AppScreen {
   });
 }
 
-final Map<ScreenType, AppScreen> screenList = {
-  ScreenType.Home:
-      const AppScreen(ScreenType.Home, 'Home', Icons.home, HomeScreen()),
+final Map<ScreenType, AppScreen> screenList = const {
+  ScreenType.Home: AppScreen(ScreenType.Home, 'Home', Icons.home, HomeScreen()),
   ScreenType.Favorites: AppScreen(ScreenType.Favorites, 'Favorites',
       Icons.favorite_border, FavoritesScreen()),
   ScreenType.Images:
-      const AppScreen(ScreenType.Images, 'Images', Icons.image, ImagesScreen()),
-  ScreenType.Profile: const AppScreen(
-      ScreenType.Profile, 'Profile', Icons.person, ProfileScreen()),
-  ScreenType.Sliver: const AppScreen(
-      ScreenType.Sliver, 'Sliver', Icons.expand_more, SliverScreen()),
-  ScreenType.Sliver2: const AppScreen(
+      AppScreen(ScreenType.Images, 'Images', Icons.image, ImagesScreen()),
+  ScreenType.Profile:
+      AppScreen(ScreenType.Profile, 'Profile', Icons.person, ProfileScreen()),
+  ScreenType.Sliver:
+      AppScreen(ScreenType.Sliver, 'Sliver', Icons.expand_more, SliverScreen()),
+  ScreenType.Sliver2: AppScreen(
       ScreenType.Sliver2, 'Sliver 2', Icons.expand_more, SliverBarSibling()),
-  ScreenType.Authenticated: const AppScreen(ScreenType.Authenticated,
-      'Authenticated', Icons.lock_outline, AuthenticatedScreen(),
-      authenticated: true)
 };
 
-final currentScreenProvider = StateProvider<int>((ref) => 0);
+final screenIndexProvider = StateProvider<int>((ref) => 0);

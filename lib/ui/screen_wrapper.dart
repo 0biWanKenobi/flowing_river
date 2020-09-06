@@ -11,9 +11,9 @@ final typeKeySetProvider =
   return keySet;
 });
 
-final currentTypeProvider = ScopedProvider<ScreenType>((ref) => null);
-final screenProvider = Provider.family<Widget, ScreenType>((ref, type) {
-  final screenData = screenList[type];
+final currentScreenProvider = ScopedProvider<AppScreen>((_) => null);
+final currentTypeProvider = ScopedProvider<ScreenType>((_) => null);
+final screenProvider = Provider.family<Widget, AppScreen>((ref, screenData) {
   return screenData.authenticated
       ? ref.watch(loginStatusProvider).state
           ? screenData.screen
@@ -37,6 +37,7 @@ class ScreenWrapper extends HookWidget {
   Widget build(BuildContext context) {
     final screenType = useProvider(currentTypeProvider);
     final screenKeys = useProvider(typeKeySetProvider(screenType));
+    final screenData = useProvider(currentScreenProvider);
     // useProvider(screenProvider(screenType));
 
     return KeyedSubtree(
@@ -51,7 +52,7 @@ class ScreenWrapper extends HookWidget {
           return MaterialPageRoute(
             settings: settings,
             builder: (ctx) => Consumer(
-              builder: (_, watch, __) => watch(screenProvider(screenType)),
+              builder: (_, watch, __) => watch(screenProvider(screenData)),
             ),
           );
         },

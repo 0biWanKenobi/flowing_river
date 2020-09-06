@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 }
 
 final screenTitleProvider = Provider<String>((ref) {
-  final index = ref.watch(AppNav.currentScreenProvider).state;
+  final index = ref.watch(AppNav.screenIndexProvider).state;
   return AppNav.screenList[AppNav.ScreenType.values.elementAt(index)].name;
 });
 
@@ -46,7 +46,7 @@ class MyHomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentScreen = useProvider(AppNav.currentScreenProvider);
+    final screenIndex = useProvider(AppNav.screenIndexProvider).state;
     final screenTitle = useProvider(screenTitleProvider);
 
     return Scaffold(
@@ -55,11 +55,13 @@ class MyHomePage extends HookWidget {
       ),
       drawer: SideDrawer(),
       body: IndexedStack(
-        index: currentScreen.state,
+        index: screenIndex,
         children: AppNav.screenList.values
             .map(
               (el) => ProviderScope(
                 overrides: [
+                  currentScreenProvider
+                      .overrideWithValue(AppNav.screenList[el.type]),
                   currentTypeProvider.overrideWithValue(el.type),
                 ],
                 child: const ScreenWrapper(),
@@ -70,8 +72,9 @@ class MyHomePage extends HookWidget {
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black12,
         showUnselectedLabels: true,
-        currentIndex: currentScreen.state,
-        onTap: (index) => currentScreen.state = index,
+        currentIndex: screenIndex,
+        onTap: (index) =>
+            context.read(AppNav.screenIndexProvider).state = index,
         items: AppNav.screenList.values
             .map((appScreen) => BottomNavigationBarItem(
                   icon: Icon(

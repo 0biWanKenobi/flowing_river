@@ -1,11 +1,16 @@
 import 'package:flowing_river/ui/bottom_navigation.dart';
 import 'package:flowing_river/ui/screen_wrapper.dart';
+import 'package:flowing_river/ui/screens/authenticated_screen.dart';
 import 'package:flowing_river/ui/screens/statenotifier_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SideDrawer extends HookWidget {
+  static const authScreen = AppScreen(ScreenType.Authenticated, 'Authenticated',
+      Icons.lock_outline, AuthenticatedScreen(),
+      authenticated: true);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -27,7 +32,8 @@ class SideDrawer extends HookWidget {
                   builder: (_) => ProviderScope(
                     overrides: [
                       currentTypeProvider
-                          .overrideWithValue(ScreenType.Authenticated)
+                          .overrideWithValue(ScreenType.Authenticated),
+                      currentScreenProvider.overrideWithValue(authScreen),
                     ],
                     child: ScreenWrapper(),
                   ),
