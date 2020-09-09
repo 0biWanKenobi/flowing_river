@@ -6,17 +6,15 @@ import 'package:state_notifier/state_notifier.dart';
 class ExampleStateNotifer extends StateNotifier<ExampleState> {
   ExampleStateNotifer(ExampleState state) : super(state);
 
-  ExampleState backup;
+  ExampleState backup = ExampleState(foo: 'foo', fie: 'fie');
   String get foo => state.foo;
 
-  void setFoo() {
-    backup = state;
-    state = state.copyWith(foo: state.fie);
+  void setFie() {
+    state = state.copyWith(foo: 'fie');
   }
 
-  void setFie() {
-    backup = state;
-    state = state.copyWith(fie: state.foo);
+  void setFoo() {
+    state = state.copyWith(fie: 'foo');
   }
 
   void reset() {
@@ -40,11 +38,11 @@ class ExampleState {
       );
 }
 
-final exampleStateNotifier = StateNotifierProvider<ExampleStateNotifer>(
+final exampleStateProvider = StateNotifierProvider<ExampleStateNotifer>(
     (_) => ExampleStateNotifer(ExampleState()));
 
 final exampleProvider =
-    Provider<ExampleState>((ref) => ref.watch(exampleStateNotifier.state));
+    Provider<ExampleState>((ref) => ref.watch(exampleStateProvider.state));
 
 class StateNotifierWidget extends HookWidget {
   static const routeName = '/stateNotifier';
@@ -52,6 +50,7 @@ class StateNotifierWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final text = useProvider(exampleProvider.select((value) => value.foo));
+    final state = useProvider(exampleStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,13 +64,13 @@ class StateNotifierWidget extends HookWidget {
               Text(text),
               SizedBox(height: 20),
               RaisedButton(
-                child: Text('Set Foo'),
-                onPressed: () => context.read(exampleStateNotifier).setFoo(),
+                child: Text('Set Fie'),
+                onPressed: () => state.setFie(),
               ),
               SizedBox(height: 20),
               RaisedButton(
-                child: Text('Set Fie'),
-                onPressed: () => context.read(exampleStateNotifier).setFie(),
+                child: Text('Set Foo'),
+                onPressed: () => state.setFoo(),
               ),
             ],
           ),
